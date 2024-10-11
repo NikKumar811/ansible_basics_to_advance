@@ -1,0 +1,17 @@
+- hosts: localhost
+  tasks:
+  - name: Install webserver package
+    ansible.builtin.package:
+        name: httpd
+        state: present
+
+  - name: create web page
+    ansible.builtin.template:
+        content: "Web page from ansible PB"
+        dest: /var/www/html/index.html
+
+  - name: start service of webserver
+    ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: yes
