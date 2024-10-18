@@ -1,0 +1,11 @@
+- hosts: localhost
+  tasks:
+    - name: Ensure user 'nikhil' is present
+      user_management:
+        username: nikhil
+        state: present
+
+    - name: Ensure user 'nikhil' is absent
+      user_management:
+        username: nikhil
+        state: absent
