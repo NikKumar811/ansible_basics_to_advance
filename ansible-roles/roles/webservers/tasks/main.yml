@@ -1,0 +1,16 @@
+# task file for webservers
+- name: install webserver package
+  ansible.builtin.package:
+      name: httpd
+      state: present
+
+- name: update web page
+  ansible.builtin.template:
+      src: index.html.j2
+      dest: /var/www/html/index.html
+
+- name: start webserver service
+  ansible.builtin.service:
+      name: httpd
+      state: started
+      enabled: yes
