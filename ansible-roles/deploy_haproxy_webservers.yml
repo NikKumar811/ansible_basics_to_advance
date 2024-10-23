@@ -1,0 +1,9 @@
+- hosts: lb
+  roles:
+  - name: deploy haproxy
+    role: haproxy
+
+- hosts: webservers
+  roles:
+  - name: deploy webservers
+    role: webservers
