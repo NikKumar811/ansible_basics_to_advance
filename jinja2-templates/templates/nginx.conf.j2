@@ -1,0 +1,16 @@
+server {
+    listen 80;
+    server_name {{ server_name }};
+    
+    {% for server in backend_servers %}
+    location /server{{ loop.index }} {
+        proxy_pass http://{{ server }};
+    }
+    {% endfor %}
+
+    {% if ssl_enabled %}
+    listen 443 ssl;
+    ssl_certificate /etc/nginx/ssl/{{ server_name }}.crt;
+    ssl_certificate_key /etc/nginx/ssl/{{ server_name }}.key;
+    {% endif %}
+}
