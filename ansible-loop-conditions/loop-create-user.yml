@@ -1,0 +1,10 @@
+- hosts: localhost
+  tasks:
+  - name: create users
+    ansible.builtin.user:
+      name: "{{ item }}"
+      state: present
+      group: wheel
+    loop:
+      - user1
+      - user2
