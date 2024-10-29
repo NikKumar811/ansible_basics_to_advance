@@ -1,0 +1,13 @@
+- hosts: localhost
+  tasks:
+  - name: check if file exists
+    ansible.builtin.stat:
+      path: /tmp/file.txt
+    register: file_check
+
+  - name: wait until file checks
+    ansible.builtin.debug:
+      msg: "file found"
+    until: file_check.stat.exists
+    retries: 5
+    delay: 7
