@@ -1,0 +1,10 @@
+- hosts: localhost
+  tasks:
+  - name: create users and assign groups
+    ansible.builtin.user:
+      name: "{{ item.key }}"
+      state: present
+      group: "{{ item.value }}"
+    with_dict:
+      nikhil1: 'wheel'
+      jack1: 'root'
