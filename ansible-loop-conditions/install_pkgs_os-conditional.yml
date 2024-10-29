@@ -1,0 +1,22 @@
+- hosts: rhel
+  tasks:
+  - name: install pkgs on rhel servers
+    ansible.builtin.yum:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - httpd
+      - git
+      - curl
+    when: ansible_facts['os_family'] == 'RedHat'
+
+
+  - name: install pkgs on ubuntu servers
+    ansible.builtin.apt:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - apache
+      - git
+      - curl
+    when: ansible_facts['os_family'] == 'Debian'
