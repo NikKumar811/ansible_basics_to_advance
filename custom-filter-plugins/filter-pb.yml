@@ -1,0 +1,13 @@
+- hosts: localhost
+  gather_facts: false
+  vars:
+    date: "2024-11-12"
+    numbers: [10, 20, 30]
+  tasks:
+    - name: Display formatted date
+      ansible.builtin.debug:
+        msg: "Formatted date: {{ date | format_date }}"
+
+    - name: Display sum of numbers
+      ansible.builtin.debug:
+        msg: "Sum of numbers: {{ numbers | sum_list }}"
