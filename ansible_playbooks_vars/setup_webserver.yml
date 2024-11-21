@@ -1,4 +1,4 @@
-- hosts: localhost
+- hosts: webserver
   tasks:
   - name: Install webserver package
     ansible.builtin.package:
