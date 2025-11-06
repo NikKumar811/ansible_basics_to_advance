@@ -53,7 +53,7 @@ How This Automation Works
 
 This demo uses two major collections:
 
-1. kubernetes.core
+# kubernetes.core
 
 Used to apply Kubernetes resources:
 
@@ -64,7 +64,7 @@ Used to apply Kubernetes resources:
 
 Equivalent to kubectl apply -f, but idempotent.
 
-2. community.crypto
+# community.crypto
 
 Used for:
 
