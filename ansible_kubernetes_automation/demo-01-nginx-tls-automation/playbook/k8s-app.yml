@@ -1,0 +1,58 @@
+- hosts: localhost
+  vars:
+    cert_common_name: "rke2-server"
+    cert_org_name: "myapp"
+    cert_days: 365
+    cert_key_path: "tls.key"
+    cert_crt_path: "tls.crt"
+    cert_csr_path: "tls.csr"
+  tasks:
+  - name: create deployment resource
+    kubernetes.core.k8s:
+      state: present
+      src: deployment.yaml
+
+  - name: create Service for nginx app
+    kubernetes.core.k8s:
+      state: present
+      src: service.yaml
+
+  - name: Generate private key (2048-bit RSA)
+    community.crypto.openssl_privatekey:
+      path: "{{ cert_key_path }}"
+      size: 2048
+      type: RSA
+      state: present
+
+  - name: Generate CSR (Certificate Signing Request)
+    community.crypto.openssl_csr:
+      path: "{{ cert_csr_path }}"
+      privatekey_path: "{{ cert_key_path }}"
+      common_name: "{{ cert_common_name }}"
+      organization_name: "{{ cert_org_name }}"
+      select_crypto_backend: cryptography
+      state: present
+
+  - name: Generate self-signed certificate
+    community.crypto.x509_certificate:
+      path: "{{ cert_crt_path }}"
+      privatekey_path: "{{ cert_key_path }}"
+      provider: selfsigned
+      csr_path: "{{ cert_csr_path }}"
+      selfsigned_not_before: "+0s"
+      selfsigned_not_after: "+{{ cert_days }}d"
+
+  - name: updating crt & key files name in secret file
+    ansible.builtin.template:
+      src: tls-secret.yaml.j2
+      dest: tls-secret.yaml
+
+  - name: Create tls secret for keys & crt
+    kubernetes.core.k8s:
+      state: present
+      src: tls-secret.yaml
+
+  - name: Create ingress for nginx app
+    kubernetes.core.k8s:
+      state: present
+      src: ingress.yaml
